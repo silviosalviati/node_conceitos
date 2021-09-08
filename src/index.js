@@ -33,13 +33,15 @@ app.post('/users', (request, response) => {
       error:"User already exists!"
     });
   }
-  users.push({
+  const user = {
     id: uuidv4(), 
     name,
     username, 
     todos: []
-  });
-  return response.status(201).json(users);
+  }
+  users.push(user);
+
+  return response.status(201).json(user);
 });
 
 app.get('/todos',checksExistsUserAccount, (request, response) => {
@@ -104,17 +106,17 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
   // Complete aqui
-  const {user} = request;
+  const { user } = request;
   const { id } = request.params;
 
-  const deleteTodo = user.todos.find((todo)=> todo.id === id);
+  const deleteTodo = user.todos.findIndex((todo)=> todo.id === id);
   
-  if(!deleteTodo){
+  if(deleteTodo === -1){
     return response.status(404).json({
       error: "todo not exists!"
     })
   }
-  users.splice(deleteTodo,1);
+  user.todos.splice(deleteTodo,1);
   return response.status(204).send();
 });
 

@@ -9,9 +9,8 @@ app.use(cors());
 app.use(express.json());
 
  const users = [];
-
+// Complete aqui - concluido
 function checksExistsUserAccount(request, response, next) {
-  // Complete aqui - concluido
   const { username } = request.headers;
   const user = users.find((user)=> user.username === username);
   if(!user){
